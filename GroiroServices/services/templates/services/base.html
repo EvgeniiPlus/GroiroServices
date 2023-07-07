@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/services/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap">
 </head>
@@ -15,13 +15,10 @@
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span>ГрОИРО. Услуги</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Главная</a></li>
-                    <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="integrations.html">Integrations</a></li>
-                    <li class="nav-item"></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="404.html">Page Not Found</a></li>
-                </ul><a class="btn btn-primary shadow" role="button" href="signup.html">Войти</a>
+                    {% for m in menu %}
+                        <li class="nav-item"><a class="nav-link active" href="{% url m.url_name %}">{{ m.title }}</a></li>
+                    {% endfor %}
+
             </div>
         </div>
     </nav>
@@ -49,8 +46,8 @@
             </div>
         </div>
     </footer>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/startup-modern.js"></script>
+    <script src="../../static/services/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../static/services/assets/js/startup-modern.js"></script>
 </body>
 
 </html>

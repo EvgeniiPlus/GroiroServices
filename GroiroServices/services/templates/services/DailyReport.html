@@ -2,13 +2,23 @@
 {% load static %}
 
 {% block content %}
+    <script>
+        function Sum(ths) {
+            var tr = ths.parentNode.parentNode,
+                price = tr.getElementsByTagName("td")[1].innerHTML,
+                count = tr.getElementsByTagName("td")[2].innerHTML;
+            alert(price)
+        }
+        // https://javascript.ru/forum/dom-window/34306-poluchit-znachenie-yacheek-opredelennojj-stroki-tablicy.html
+    </script>
     <header class="pt-5"></header>
     <section>
         <div class="container py-4 py-xl-5">
-            <form><label class="form-label fw-bold">Выберите дату:</label>
-                <input class="form-control" type="date" required="">
+            <form>
+                <label class="form-label fw-bold">Выберите дату: </label>
+                <input class="form-control fw-bold" type="date" value="{{ current_date|date:'Y-m-d' }}" required="">
                 <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
-                    <table class="table table-striped table-striped-columns table-bordered">
+                    <table id="calc_services" class="table table-striped table-striped-columns table-bordered">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 40%;">Услуга</th>
@@ -20,23 +30,22 @@
                         <tbody>
 
                                 {% for s in services %}
-                                <tr>
-                                    <td>{{ s.name }}</td>
-                                    <td class="text-center">{{ s.price }} руб.</td>
-                                    <td class="text-center">
-                                        <input class="form-control" type="number" required="" min="0" step="1" value="0" style="text-align: center;">
-                                    </td>
-                                    <td class="text-center">... руб.</td>
-                                </tr>
+                                    <tr>
+                                        <td name="service_name">{{ s.name }}</td>
+                                        <td class="text-center" name="service_price">{{ s.price }} руб.</td>
+                                        <td class="text-center">
+                                            <input class="form-control" type="number" required="" min="0" step="1" value="0" style="text-align: center;" name="service_count" onvolumechange="Sum(this)">
+                                        </td>
+                                        <td class="text-center" name="service_sum"></td>
+                                    </tr>
                                 {% endfor %}
 
                         </tbody>
                         <tfoot class="table-group-divider">
-                            <tr>
-                                <td class="fw-bold text-end">Сумма</td>
-                                <td></td>
-                                <td class="fw-bold text-center" style="padding-right: 22px;">0</td>
-                                <td class="fw-bold text-center">... руб.</td>
+                            <tr><td></td>
+                                <td class="fw-bold text-end">Итого</td>
+                                <td class="fw-bold text-center" style="padding-right: 22px;"></td>
+                                <td class="fw-bold text-center"></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -45,3 +54,4 @@
         </div>
     </section>
 {% endblock %}
+

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 
 from .models import *
@@ -24,5 +26,6 @@ def dailyReport(request):
                 'menu': menu,
                 'title': 'ГрОИРО. Услуги',
                 'services': Services.objects.all(),
+                'current_date': datetime.now(),
         }
         return render(request, 'services/DailyReport.html', context)

@@ -20,4 +20,9 @@ def home(request):
         return render(request, 'services/index.html', context)
 
 def dailyReport(request):
-        pass
+        context = {
+                'menu': menu,
+                'title': 'ГрОИРО. Услуги',
+                'services': Services.objects.all(),
+        }
+        return render(request, 'services/DailyReport.html', context)

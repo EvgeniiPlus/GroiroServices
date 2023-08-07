@@ -23,7 +23,7 @@ class Roles(models.Model):
         verbose_name_plural = 'Роли'
 
     def __str__(self):
-        return f'{self.surname} {self.name}'
+        return self.name
 
 
 class Structures(models.Model):

@@ -28,7 +28,7 @@
                                         <td class="text-center">
                                             <input class="form-control" type="number" required="" min="0" step="1" value="0" style="text-align: center;" name="service_count" onchange="Sum(this, '{{s.price}}')">
                                         </td>
-                                        <td class="text-center" name="service_sum">0</td>
+                                        <td class="text-center" name="service_sum">0 руб.</td>
                                     </tr>
                                 {% endfor %}
 
@@ -52,7 +52,8 @@
                 sum = Number(count)*parseFloat(price.replace(',', '.')),
                 total_count = document.getElementById('total_count'),
                 total_sum = document.getElementById('total_sum');
-            tr.getElementsByTagName('td')[3].innerText = sum.toFixed(2);
+            tr.getElementsByTagName('td')[3].innerText = sum.toFixed(2) + ' .руб';
+
             let trs = document.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             tc=0;
             ts=0;
@@ -60,8 +61,8 @@
                 tc = tc + Number(trs[td].getElementsByTagName('input')[0].value);
                 total_count.innerText = tc;
 
-                ts = ts + parseFloat(trs[td].getElementsByTagName('td')[3].innerText)
-                total_sum.innerText = ts.toFixed(2);
+                ts = ts + parseFloat(trs[td].getElementsByTagName('td')[3].innerText.split(' ')[0])
+                total_sum.innerText = ts.toFixed(2) + ' .руб';
             }
 
 

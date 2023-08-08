@@ -11,6 +11,7 @@ from django.views.generic import ListView, UpdateView, DetailView, DeleteView, C
 
 menu = [{'title': 'Главная', 'url_name': 'home'},
         {'title': 'Создать отчет', 'url_name': 'dailyReport'},
+
 ]
 
 def home(request):

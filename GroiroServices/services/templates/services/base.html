@@ -12,14 +12,43 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span>ГрОИРО. Услуги</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container">
+
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <span>ГрОИРО. Услуги</span>
+            </a>
+
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     {% for m in menu %}
                         <li class="nav-item"><a class="nav-link active" href="{% url m.url_name %}">{{ m.title }}</a></li>
                     {% endfor %}
-
+                </ul>
             </div>
+            <a class="btn btn-primary" style="border-radius: 10px" role="button">Войти</a>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <div class="nav-item dropdown no-arrow">
+                        <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                            <span class="d-none d-lg-inline me-2 text-black-600 large" style="color: black">Евгений Саченко</span>
+                            <img class="border rounded-circle img-profile" height="50px" src="../../static/services/assets/img/NoPhoto.jpg" />
+                        </a>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                            <a class="dropdown-item" href="#">Профиль</a>
+                            <a class="dropdown-item" href="#">Мои отчеты</a>
+                            <a class="dropdown-item" href="#">Мои услуги</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Выход</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
         </div>
     </nav>
 

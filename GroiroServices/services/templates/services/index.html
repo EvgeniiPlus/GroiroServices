@@ -24,7 +24,7 @@
     <section>
         <div class="container py-4 py-xl-5">
             <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
-                {% for service in services %}
+                {% for s in structures %}
                     <div class="col">
                         <div class="card border-light border-1 d-flex justify-content-center p-4">
                             <div class="card-body">
@@ -36,8 +36,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold text-start">{{ service.name }}</h5>
-                                    <p class="text-muted">{{ service.description }}</p>
+                                    <h5 class="fw-bold text-start">{{ s.name }}</h5>
+                                    <p class="text-muted">{{ s.description }}</p>
                                     <a class="btn btn-sm px-0" type="button">Подробнее&nbsp;
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-right">
                                             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path>

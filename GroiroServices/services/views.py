@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from .models import *
@@ -16,14 +17,17 @@ menu = [{'title': 'Главная', 'url_name': 'home', 'role': ['Админис
 
         ]
 
-
 def home(request):
     context = {
         'menu': menu,
         'title': 'ГрОИРО. Услуги',
-        'services': Services.objects.all(),
-        'userRole': str(Users.objects.get(user=request.user).role)
+
+        'structures': Structures.objects.all()
     }
+
+    if request.user.is_authenticated:
+        context['userRole'] = str(Users.objects.get(user=request.user).role)
+
     return render(request, 'services/index.html', context)
 
 
@@ -74,9 +78,18 @@ def listReports(request, pk):
     context = {
         'menu': menu,
         'title': 'ГрОИРО. Услуги',
+        'structure': Structures.objects.get(pk=pk),
         'userRole': str(Users.objects.get(user=request.user).role),
         'reports': Reports.objects.filter(structure=pk)
     }
+
+    if request.method == 'POST':
+        month = str(request.POST.get('month'))
+        context['reports'] = Reports.objects.filter(structure=pk).filter(date__year__lte=month.split('-')[0],
+                                                                         date__month__lte=month.split('-')[1],
+                                                                         date__year__gte=month.split('-')[0],
+                                                                         date__month__gte=month.split('-')[1]
+                                                                         )
 
     return render(request, 'services/listReports.html', context)
 

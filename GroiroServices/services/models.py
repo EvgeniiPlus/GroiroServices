@@ -1,7 +1,10 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
+
 class Users(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     surname = models.CharField(max_length=100, verbose_name="Фамилия")
     name = models.CharField(max_length=150, verbose_name="Имя, отчество")
     role = models.ForeignKey('Roles', on_delete=models.PROTECT, verbose_name='Роль')

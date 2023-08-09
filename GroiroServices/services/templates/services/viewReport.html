@@ -6,49 +6,22 @@
 <header class="pt-5" xmlns="http://www.w3.org/1999/html"></header>
     <section>
         <div class="container py-4 py-xl-5">
-            <h1 style="text-align: right; margin: 20px 40px">{{ structure.name }}. <br>Ежедневный отчет</h1>
+            <h1 style="text-align: right; margin: 20px 40px">Просмотр отчета</h1>
             <form method="post">
                 {% csrf_token %}
                 <label class="form-label fw-bold">Выберите дату: </label>
                 <input class="form-control fw-bold" type="date" name="service_date" value="{{ current_date|date:'Y-m-d' }}" required="">
                 <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
-                    {% if services %}
                         <table id="calc_services" class="table table-striped table-striped-columns table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" style="width: 40%;">Услуга</th>
-                                    <th class="text-center">Стоимость</th>
-                                    <th class="text-center" style="width: 15%;">Количество</th>
-                                    <th class="text-center" style="width: 23%;">Сумма</th>
-                                </tr>
-                            </thead>
                             <tbody>
-                                    {% for s in services %}
+                                    {% for s in structures %}
                                         <tr>
                                             <td name="service_name">{{ s.name }}</td>
-                                            <td class="text-center" name="service_price">{{ s.price }} руб.</td>
-                                            <td class="text-center">
-                                                <input class="form-control" type="number" required="" min="0" step="1" value="0" style="text-align: center;" name="service_count" onchange="Sum(this, '{{s.price}}')">
-                                            </td>
-                                            <td class="text-center" name="service_sum">0 руб.</td>
-                                            <td hidden><input type="number" value={{s.pk}} name="service_id"></td>
                                         </tr>
                                     {% endfor %}
                             </tbody>
-                            <tfoot class="table-group-divider">
-                                <tr><td></td>
-                                    <td class="fw-bold text-end">Итого за день</td>
-                                    <td class="fw-bold text-center" style="padding-right: 22px;" id="total_count"></td>
-                                    <td class="fw-bold text-center" id="total_sum"></td>
-                                </tr>
-                            </tfoot>
                         </table>
-                    {% else %}
-                        <h2><b><i>Услуг нет =(</b></i></h2>
-                    {% endif %}
-
                 </div>
-
                 <input class="btn btn-primary" type="submit">
             </form>
         </div>
@@ -78,4 +51,3 @@
         // https://javascript.ru/forum/dom-window/34306-poluchit-znachenie-yacheek-opredelennojj-stroki-tablicy.html
     </script>
 {% endblock %}
-

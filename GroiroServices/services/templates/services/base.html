@@ -16,37 +16,40 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     {% for m in menu %}
-                        <li class="nav-item"><a class="nav-link active" href="{% url m.url_name %}">{{ m.title }}</a></li>
+                        {% if userRole in m.role %}
+                            <li class="nav-item"><a class="nav-link active" href="{% url m.url_name %}">{{ m.title }}</a></li>
+                        {% else %}
+                            Ошибка =(
+                        {% endif %}
                     {% endfor %}
                 </ul>
-
             </div>
-        </div>
-        <a class="btn btn-primary" style="border-radius: 10px" role="button">Войти</a>
+
+            {% if user.is_authenticated %}
             <ul class="navbar-nav flex-nowrap ms-auto">
                 <li class="nav-item dropdown no-arrow">
                     <div class="nav-item dropdown no-arrow">
                         <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                            <span class="d-none d-lg-inline me-2 text-black-600 large" style="color: black">Евгений Саченко</span>
+                            <span class="d-none d-lg-inline me-2 text-black-600 large" style="color: black">Добрый день, {{user.first_name}}</span>
                             <img class="border rounded-circle img-profile" height="50px" src="../../static/services/assets/img/NoPhoto.jpg" />
                         </a>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                             <a class="dropdown-item" href="#">Профиль</a>
+                            {% if user.is_superuser %}
+                                <a class="dropdown-item" href="/admin/">Админка</a>
+                            {% endif %}
                             <a class="dropdown-item" href="#">Мои отчеты</a>
                             <a class="dropdown-item" href="#">Мои услуги</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Выход</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
                         </div>
                     </div>
                 </li>
             </ul>
-
-        {% if user.is_authenticated %}
-                <p>Добрый день, {{user.first_name}}</p>
-                <a href="{% url 'logout' %}">Выход</a>
             {% else %}
-                <a class="btn-primary" href="{% url 'login' %}">Войти</a>
+                <a class="btn btn-primary" style="border-radius: 10px" role="button" href="{% url 'login' %}">Войти</a>
             {% endif %}
+        </div>
     </nav>
 
     {% block content %}
@@ -55,6 +58,7 @@
 
     <footer>
         <div class="container py-4 py-lg-5">
+
             <hr>
             <div class="text-muted d-flex justify-content-between align-items-center pt-3">
                 <p class="mb-0">Copyright © 2023 ГрОИРО. Услуги</p>

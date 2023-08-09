@@ -12,7 +12,7 @@ from django.views.generic import ListView, UpdateView, DetailView, DeleteView, C
 
 menu = [{'title': 'Главная', 'url_name': 'home', 'role': ['Администратор', 'Оператор', 'Экономист']},
         {'title': 'Создать отчет', 'url_name': 'dailyReport', 'role': ['Оператор']},
-        {'title': 'Просмотреть отчеты', 'url_name': 'viewReport', 'role': ['Администратор', 'Экономист']},
+        {'title': 'Отчеты', 'url_name': 'chooseStructure', 'role': ['Администратор', 'Экономист']},
 
         ]
 
@@ -48,6 +48,7 @@ def dailyReport(request):
                 Reports.objects.create(
                     date=date,
                     service=Services.objects.get(pk=service_id_list[i]),
+                    structure=Structures.objects.filter(employee=Users.objects.get(user=request.user))[0],
                     amount=service_count_list[i],
                     sum=round(int(service_count_list[i]) *
                               Services.objects.filter(pk=service_id_list[i])[0].price, 2)
@@ -59,13 +60,23 @@ def dailyReport(request):
 
     return render(request, 'services/DailyReport.html', context)
 
-def viewReport(request):
+def chooseStructure(request):
     context = {
         'menu': menu,
         'title': 'ГрОИРО. Услуги',
         'structures': Structures.objects.all(),
-        'current_date': datetime.now(),
         'userRole': str(Users.objects.get(user=request.user).role)
     }
 
-    return render(request, 'services/viewReport.html', context)
+    return render(request, 'services/chooseStructure.html', context)
+
+def listReports(request, pk):
+    context = {
+        'menu': menu,
+        'title': 'ГрОИРО. Услуги',
+        'userRole': str(Users.objects.get(user=request.user).role),
+        'reports': Reports.objects.filter(structure=pk)
+    }
+
+    return render(request, 'services/listReports.html', context)
+

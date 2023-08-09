@@ -58,6 +58,7 @@ class Services(models.Model):
 
 class Reports(models.Model):
     date = models.DateField(verbose_name='Дата')
+    structure = models.ForeignKey('Structures', on_delete=models.PROTECT, verbose_name="Структура")
     service = models.ForeignKey('Services', on_delete=models.PROTECT, verbose_name="Услуга")
     amount = models.PositiveIntegerField(verbose_name="Количество")
     sum = models.FloatField(verbose_name="Сумма")

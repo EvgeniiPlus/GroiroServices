@@ -14,7 +14,7 @@
                                 <h4 class="card-title" align="center">{{ s.name }}</h4>
                                 <p class="card-text">{{ s.description }}</p>
                                 <p class="card-text"><b>Оператор:</b> {{ s.employee }}</p>
-                                <a class="btn btn-primary" type="button" href="#">Выбрать</a>
+                                <a class="btn btn-primary" type="button" href="{% url 'listReports' s.pk %}">Выбрать</a>
                             </div>
                         </div>
                     {% endfor %}

@@ -1,0 +1,50 @@
+{% extends 'services/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<header class="pt-5" xmlns="http://www.w3.org/1999/html"></header>
+    <section>
+        <div class="container py-4 py-xl-5" style="margin-top: 30px" >
+            <form>
+                <div class="row">
+                    <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите дату:</label></div>
+                    <div class="col"><input class="form-control" type="date" required /></div>
+                    <div class="col"><input class="btn btn-primary" type="submit"/></div>
+                </div>
+                <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
+                    <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
+                        <table class="table table-striped table-striped-columns table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 15%;">Дата</th>
+                                    <th class="text-center">Услуга</th>
+                                    <th class="text-center" style="width: 15%;">Количество</th>
+                                    <th class="text-center" style="width: 23%;">Сумма</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in reports %}
+                                    <tr>
+                                        <td class="text-center">{{ r.date }}</td>
+                                        <td class="text-center">{{ r.service }}</td>
+                                        <td class="text-center">{{ r.amount }}</td>
+                                        <td class="text-center">{{ r.sum }} руб.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot class="table-group-divider">
+                                <tr>
+                                    <td class="fw-bold text-end"></td>
+                                    <td class="text-end"><strong>Итого</strong></td>
+                                    <td class="fw-bold text-center" style="padding-right: 22px;">0</td>
+                                    <td class="fw-bold text-center">... руб.</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

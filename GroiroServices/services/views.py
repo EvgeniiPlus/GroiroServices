@@ -96,3 +96,12 @@ def listReports(request, pk):
 
     return render(request, 'services/listReports.html', context)
 
+def download(request):
+    date_start = str(request.POST.get('date_start'))
+    date_finish = str(request.POST.get('date_finish'))
+    service = request.POST.get('service')
+
+    reports = list(Reports.objects.filter(service=service))
+    print(reports)
+
+    return reverse_lazy()

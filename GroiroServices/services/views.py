@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,tzinfo, timezone
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -8,6 +8,9 @@ from django.http import HttpResponse, HttpResponseNotFound, StreamingHttpRespons
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
+
+import pandas
+
 
 # Create your views here.
 
@@ -86,22 +89,56 @@ def listReports(request, pk):
     }
 
     if request.method == 'POST':
+        # date_start = str(request.POST.get('date_start'))
+        # date_finish = str(request.POST.get('date_finish'))
+        # context['reports'] = Reports.objects.filter(structure=pk).filter(date__gte=date_start,
+        #                                                                  date__lte=date_finish,
+        #                                                                  )
+
+
         date_start = str(request.POST.get('date_start'))
         date_finish = str(request.POST.get('date_finish'))
-        context['reports'] = Reports.objects.filter(structure=pk).filter(date__gte=date_start,
-                                                                         date__lte=date_finish,
-                                                                         )
+        service = request.POST.get('service')
+        if date_start and date_finish != '':
+            if service == 'all':
+                reports = Reports.objects.filter(structure=Structures.objects.get(pk=pk), date__gte=date_start, date__lte=date_finish)
+            else:
+                reports = Reports.objects.filter(service__name=service, date__gte=date_start, date__lte=date_finish)
+        else:
+            if service == 'all':
+                reports = Reports.objects.filter(structure=Structures.objects.get(pk=pk))
+            else:
+                reports = Reports.objects.filter(service__name=service)
+
+        dates = []
+        services = []
+        amounts = []
+        sums = []
+        for r in reports:
+            dates.append(r.date)
+            services.append(r.service)
+            amounts.append(r.amount)
+            sums.append(r.sum)
+        df = pandas.DataFrame({'Дата': dates,
+                               'Услуга': services,
+                               'Количество': amounts,
+                               'Сумма': sums,
+                               })
+        df.to_excel(f'./reports/{Structures.objects.get(pk=pk)}.xlsx', index=False)
+
+
         context['date_start'] = date_start
         context['date_finish'] = date_finish
 
     return render(request, 'services/listReports.html', context)
 
-def download(request):
-    date_start = str(request.POST.get('date_start'))
-    date_finish = str(request.POST.get('date_finish'))
-    service = request.POST.get('service')
-
-    reports = list(Reports.objects.filter(service=service))
-    print(reports)
-
-    return reverse_lazy()
+# def download(request):
+#     if request.method == 'POST':
+#         date_start = str(request.POST.get('date_start'))
+#         date_finish = str(request.POST.get('date_finish'))
+#         # service = request.POST.get('service')
+#         print( date_start, date_finish)
+#         # reports = Reports.objects.filter(service=service)
+#         # print(reports)
+#
+#     return redirect('listReports')

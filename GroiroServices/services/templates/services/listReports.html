@@ -13,8 +13,8 @@
                 <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
 
                     <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите период:</label></div>
-                    <div class="col"><input class="form-control" type="date" id="date_start" name="date_start" value="{{ date_start }}"  onchange="Filter_by_date()" required/></div>
-                    <div class="col"><input class="form-control" type="date" id="date_finish" name="date_finish" value="{{ date_finish }}"  onchange="Filter_by_date()" required/></div>
+                    <div class="col"><input class="form-control" type="date" id="date_start" name="date_start" value="{{date_start}}" onchange="Filter_by_date()" /></div>
+                    <div class="col"><input class="form-control" type="date" id="date_finish" name="date_finish" value="{{date_finish}}" onchange="Filter_by_date()" /></div>
 
                     <div class="col">
 <!--                        <input class="btn btn-primary" type="submit" style="border-radius: 10px" value="Показать"/>-->
@@ -37,8 +37,8 @@
 
                     </div>
                     <div class="col">
-                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="#">Печать</a>
-                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="{% url 'download' %}">Скачать (.xlsx)</a>
+<!--                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="#">Печать</a>-->
+                        <input type="submit"  class="btn btn-info" style="margin-left: 10px; border-radius: 10px" value="Скачать (.xlsx)" href="{% url 'download' %}"/>
                     </div>
 
                 </div>

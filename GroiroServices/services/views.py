@@ -79,17 +79,20 @@ def listReports(request, pk):
         'menu': menu,
         'title': 'ГрОИРО. Услуги',
         'structure': Structures.objects.get(pk=pk),
+        'services': Services.objects.filter(structure=Structures.objects.get(pk=pk)),
         'userRole': str(Users.objects.get(user=request.user).role),
-        'reports': Reports.objects.filter(structure=pk)
+        'reports': Reports.objects.filter(structure=pk).order_by('-date')
+
     }
 
     if request.method == 'POST':
-        month = str(request.POST.get('month'))
-        context['reports'] = Reports.objects.filter(structure=pk).filter(date__year__lte=month.split('-')[0],
-                                                                         date__month__lte=month.split('-')[1],
-                                                                         date__year__gte=month.split('-')[0],
-                                                                         date__month__gte=month.split('-')[1]
+        date_start = str(request.POST.get('date_start'))
+        date_finish = str(request.POST.get('date_finish'))
+        context['reports'] = Reports.objects.filter(structure=pk).filter(date__gte=date_start,
+                                                                         date__lte=date_finish,
                                                                          )
+        context['date_start'] = date_start
+        context['date_finish'] = date_finish
 
     return render(request, 'services/listReports.html', context)
 

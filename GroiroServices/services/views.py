@@ -17,12 +17,17 @@ import pandas
 menu = [{'title': 'Главная', 'url_name': 'home', 'role': ['Администратор', 'Оператор', 'Экономист']},
         {'title': 'Создать отчет', 'url_name': 'dailyReport', 'role': ['Оператор']},
         {'title': 'Отчеты', 'url_name': 'chooseStructure', 'role': ['Администратор', 'Экономист']},
-
         ]
+
+userMenu = [{'title': 'Админ-панель', 'url_name': 'admin:index', 'role': ['Администратор']},
+            {'title': 'Мои отчеты', 'url_name': 'myReports', 'role': ['Оператор']},
+            {'title': 'Мои услуги', 'url_name': 'myServices', 'role': ['Оператор']},
+            ]
 
 def home(request):
     context = {
         'menu': menu,
+        'userMenu': userMenu,
         'title': 'ГрОИРО. Услуги',
 
         'structures': Structures.objects.all()
@@ -37,7 +42,8 @@ def home(request):
 def dailyReport(request):
     context = {
         'menu': menu,
-        'title': 'ГрОИРО. Услуги',
+        'userMenu': userMenu,
+        'title': 'Ежедневный отчет',
         'services': Services.objects.filter(structure=Structures.objects.get(employee=Users.objects.get(user=request.user))),
         'structure': Structures.objects.filter(employee=Users.objects.get(user=request.user))[0],
         'current_date': datetime.now(),
@@ -70,7 +76,8 @@ def dailyReport(request):
 def chooseStructure(request):
     context = {
         'menu': menu,
-        'title': 'ГрОИРО. Услуги',
+        'userMenu': userMenu,
+        'title': 'Выбор структуры',
         'structures': Structures.objects.all(),
         'userRole': str(Users.objects.get(user=request.user).role)
     }
@@ -80,30 +87,27 @@ def chooseStructure(request):
 def listReports(request, pk):
     context = {
         'menu': menu,
-        'title': 'ГрОИРО. Услуги',
+        'userMenu': userMenu,
+        'title': 'Отчеты',
         'structure': Structures.objects.get(pk=pk),
         'services': Services.objects.filter(structure=Structures.objects.get(pk=pk)),
         'userRole': str(Users.objects.get(user=request.user).role),
         'reports': Reports.objects.filter(structure=pk).order_by('-date')
-
     }
 
     if request.method == 'POST':
-        # date_start = str(request.POST.get('date_start'))
-        # date_finish = str(request.POST.get('date_finish'))
-        # context['reports'] = Reports.objects.filter(structure=pk).filter(date__gte=date_start,
-        #                                                                  date__lte=date_finish,
-        #                                                                  )
-
-
         date_start = str(request.POST.get('date_start'))
         date_finish = str(request.POST.get('date_finish'))
         service = request.POST.get('service')
         if date_start and date_finish != '':
             if service == 'all':
-                reports = Reports.objects.filter(structure=Structures.objects.get(pk=pk), date__gte=date_start, date__lte=date_finish)
+                reports = Reports.objects.filter(structure=Structures.objects.get(pk=pk),
+                                                 date__gte=date_start,
+                                                 date__lte=date_finish)
             else:
-                reports = Reports.objects.filter(service__name=service, date__gte=date_start, date__lte=date_finish)
+                reports = Reports.objects.filter(service__name=service,
+                                                 date__gte=date_start,
+                                                 date__lte=date_finish)
         else:
             if service == 'all':
                 reports = Reports.objects.filter(structure=Structures.objects.get(pk=pk))
@@ -124,21 +128,34 @@ def listReports(request, pk):
                                'Количество': amounts,
                                'Сумма': sums,
                                })
-        df.to_excel(f'./reports/{Structures.objects.get(pk=pk)}.xlsx', index=False)
-
+        df.to_excel(f'services/reports/{Structures.objects.get(pk=pk)}.xlsx', index=False)
 
         context['date_start'] = date_start
         context['date_finish'] = date_finish
 
     return render(request, 'services/listReports.html', context)
 
-# def download(request):
-#     if request.method == 'POST':
-#         date_start = str(request.POST.get('date_start'))
-#         date_finish = str(request.POST.get('date_finish'))
-#         # service = request.POST.get('service')
-#         print( date_start, date_finish)
-#         # reports = Reports.objects.filter(service=service)
-#         # print(reports)
-#
-#     return redirect('listReports')
+
+def myReports(request):
+    context = {
+        'menu': menu,
+        'userMenu': userMenu,
+        'title': 'Мои отчеты',
+        'services': Services.objects.filter(structure=Structures.objects.get(employee=Users.objects.get(user=request.user))),
+        'structure': Structures.objects.filter(employee=Users.objects.get(user=request.user)).first,
+        'userRole': str(Users.objects.get(user=request.user).role),
+        'reports': Reports.objects.filter(structure=Structures.objects.get(employee=Users.objects.get(user=request.user)))
+    }
+    return render(request, 'services/listReports.html', context)
+
+def myServices(request):
+    context = {
+        'menu': menu,
+        'userMenu': userMenu,
+        'title': 'Мои услуги',
+        'userRole': str(Users.objects.get(user=request.user).role),
+        'services': Services.objects.filter(structure=Structures.objects.get(employee=Users.objects.get(user=request.user))),
+        'structure': Structures.objects.filter(employee=Users.objects.get(user=request.user)).first,
+    }
+    return render(request, 'services/listReports.html', context)
+

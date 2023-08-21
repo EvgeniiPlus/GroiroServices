@@ -35,11 +35,11 @@
                         </a>
                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                             <a class="dropdown-item" href="#">Профиль</a>
-                            {% if user.is_superuser %}
-                                <a class="dropdown-item" href="/admin/">Админка</a>
-                            {% endif %}
-                            <a class="dropdown-item" href="#">Мои отчеты</a>
-                            <a class="dropdown-item" href="#">Мои услуги</a>
+                            {% for m in userMenu %}
+                                {% if userRole in m.role %}
+                                    <a class="dropdown-item" href="{% url m.url_name %}">{{ m.title }}</a>
+                                {% endif %}
+                            {% endfor %}
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
                         </div>

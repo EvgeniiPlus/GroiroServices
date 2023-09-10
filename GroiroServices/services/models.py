@@ -62,6 +62,7 @@ class Reports(models.Model):
     service = models.ForeignKey('Services', on_delete=models.PROTECT, verbose_name="Услуга")
     amount = models.PositiveIntegerField(verbose_name="Количество")
     sum = models.FloatField(verbose_name="Сумма")
+    nds = models.FloatField(verbose_name='Из них НДС', blank=True)
     date_create = models.DateTimeField(auto_now_add=True, verbose_name="Создано")
     date_edit = models.DateTimeField(auto_now=True, verbose_name="Изменено")
 

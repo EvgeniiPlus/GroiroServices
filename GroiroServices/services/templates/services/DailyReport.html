@@ -20,6 +20,7 @@
                                     <th class="text-center">Стоимость</th>
                                     <th class="text-center" style="width: 15%;">Количество</th>
                                     <th class="text-center" style="width: 23%;">Сумма</th>
+                                    <th class="text-center" style="width: 23%;">Из них НДС</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,6 +32,7 @@
                                                 <input class="form-control" type="number" required="" min="0" step="1" value="0" style="text-align: center;" name="service_count" onchange="Sum(this, '{{s.price}}')">
                                             </td>
                                             <td class="text-center" name="service_sum">0 руб.</td>
+                                            <td class="text-center" name="nds">0 руб.</td>
                                             <td hidden><input type="number" value={{s.pk}} name="service_id"></td>
                                         </tr>
                                     {% endfor %}
@@ -40,6 +42,7 @@
                                     <td class="fw-bold text-end">Итого за день</td>
                                     <td class="fw-bold text-center" style="padding-right: 22px;" id="total_count"></td>
                                     <td class="fw-bold text-center" id="total_sum"></td>
+                                    <td class="fw-bold text-center" id="total_nds"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -60,19 +63,26 @@
             const tr = ths.parentNode.parentNode,
                 count = tr.getElementsByTagName('input')[0].value,
                 sum = Number(count)*parseFloat(price.replace(',', '.')),
+                nds = sum*0.2,
                 total_count = document.getElementById('total_count'),
-                total_sum = document.getElementById('total_sum');
+                total_sum = document.getElementById('total_sum'),
+                total_nds = document.getElementById('total_nds');
             tr.getElementsByTagName('td')[3].innerText = sum.toFixed(2).replace('.', ',') + ' руб.';
+            tr.getElementsByTagName('td')[4].innerText = nds.toFixed(2).replace('.', ',') + ' руб.';
 
             let trs = document.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             tc=0;
             ts=0;
+            tn=0
             for (let td=0; td < trs.length; td++){
                 tc = tc + Number(trs[td].getElementsByTagName('input')[0].value);
                 total_count.innerText = tc;
 
                 ts = ts + parseFloat(trs[td].getElementsByTagName('td')[3].innerText.split(' ')[0].replace(',', '.'))
                 total_sum.innerText = ts.toFixed(2).replace('.', ',') + ' руб.';
+
+                tn = tn + parseFloat(trs[td].getElementsByTagName('td')[4].innerText.split(' ')[0].replace(',', '.'))
+                total_nds.innerText = tn.toFixed(2).replace('.', ',') + ' руб.';
             }
         }
         // https://javascript.ru/forum/dom-window/34306-poluchit-znachenie-yacheek-opredelennojj-stroki-tablicy.html

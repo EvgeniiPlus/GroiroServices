@@ -20,28 +20,31 @@
 <!--                        <input class="btn btn-primary" type="submit" style="border-radius: 10px" value="Показать"/>-->
                         <a class="btn btn-success" style="margin-left: 10px; border-radius: 10px" href="{% url 'listReports' structure.pk %}">Показать все</a>
                     </div>
+                    <div class="col">
+                        <input type="submit"  class="btn btn-info" style="border-radius: 10px" value="Скачать (.xlsx)" />
+                    </div>
                 </div>
 
-                <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+<!--                <div class="row" style="margin-top: 10px;margin-bottom: 10px;">-->
+<!--                    <div class="col text-end"><label class="col-form-label fw-bold text-end"></label></div>-->
+<!--&lt;!&ndash;                    <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите услугу:</label></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="col">&ndash;&gt;-->
+<!--&lt;!&ndash;                         <select class="border border-1 border-primary"  name="service" style="border-radius: 5px; padding: 2px; height: 100%;width: 100%;" onchange="Filter_by_service(this)">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option value="all">Все услуги</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                             {% for s in services %}&ndash;&gt;-->
+<!--&lt;!&ndash;                                <option>{{s.name}}</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                     </div>&ndash;&gt;-->
+<!--                    <div class="col">-->
 
-                    <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите услугу:</label></div>
-                    <div class="col">
-                         <select class="border border-1 border-primary"  name="service" style="border-radius: 5px; padding: 2px; height: 100%;width: 100%;" onchange="Filter_by_service(this)">
-                                <option value="all">Все услуги</option>
-                             {% for s in services %}
-                                <option>{{s.name}}</option>
-                            {% endfor %}
-                        </select>
-                     </div>
-                    <div class="col">
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--&lt;!&ndash;                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="#">Печать</a>&ndash;&gt;-->
+<!--                        <input type="submit"  class="btn btn-info" style="margin-left: 10px; border-radius: 10px" value="Скачать (.xlsx)" />-->
+<!--                    </div>-->
 
-                    </div>
-                    <div class="col">
-<!--                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="#">Печать</a>-->
-                        <input type="submit"  class="btn btn-info" style="margin-left: 10px; border-radius: 10px" value="Скачать (.xlsx)" />
-                    </div>
-
-                </div>
+<!--                </div>-->
 
                 <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
@@ -52,6 +55,7 @@
                                     <th class="text-center">Услуга</th>
                                     <th class="text-center" style="width: 5%;">Количество</th>
                                     <th class="text-center" style="width: 10%;">Сумма</th>
+                                    <th class="text-center" style="width: 10%;">Из них НДС</th>
                                     <th class="text-center" style="width: 10%;">Дата создания отчета</th>
                                     <th class="text-center" style="width: 10%;">Дата изменения отчета</th>
                                 </tr>
@@ -63,6 +67,7 @@
                                         <td class="text-center">{{ r.service }}</td>
                                         <td class="text-center">{{ r.amount }}</td>
                                         <td class="text-center">{{ r.sum }} руб.</td>
+                                        <td class="text-center">{{ r.nds }} руб.</td>
                                         <td class="text-center">{{ r.date_create|date:"d.m.Y" }}</td>
                                         <td class="text-center">{{ r.date_edit|date:"d.m.Y" }}</td>
                                     </tr>

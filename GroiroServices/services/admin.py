@@ -33,7 +33,7 @@ class UsersAdmin(admin.ModelAdmin):
 
 
 class ReportsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date', 'service', 'amount', 'sum', 'date_create', 'date_edit')
+    list_display = ('id', 'date', 'service', 'amount', 'sum', 'nds', 'date_create', 'date_edit')
     list_display_links = ('id', 'date', 'service')
     list_filter = ('date', 'service', 'date_create')
 

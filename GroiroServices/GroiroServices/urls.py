@@ -24,7 +24,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('services.urls')),
+    path('services/', include('services.urls')),
+    path('', include('AllGroiro.urls'))
 ]
 
 if settings.DEBUG:

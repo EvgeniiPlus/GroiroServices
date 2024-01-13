@@ -11,40 +11,41 @@
                 <h1 style="text-align: right; margin: 20px 40px">{{ structure.name }}. <br>Отчеты</h1>
 
                 <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
+                    <hr>
 
                     <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите период:</label></div>
-                    <div class="col"><input class="form-control" type="date" id="date_start" name="date_start" value="{{date_start}}" onchange="Filter_by_date()" /></div>
-                    <div class="col"><input class="form-control" type="date" id="date_finish" name="date_finish" value="{{date_finish}}" onchange="Filter_by_date()" /></div>
 
-                    <div class="col">
-<!--                        <input class="btn btn-primary" type="submit" style="border-radius: 10px" value="Показать"/>-->
-                        <a class="btn btn-success" style="margin-left: 10px; border-radius: 10px" href="{% url 'listReports' structure.pk %}">Показать все</a>
-                    </div>
-                    <div class="col">
-                        <input type="submit"  class="btn btn-info" style="border-radius: 10px" value="Скачать (.xlsx)" />
-                    </div>
+                    <div class="col"><input class="form-control" type="date" id="date_start" name="date_start" value="{{date_start}}"/></div>
+                    <div class="col"><input class="form-control" type="date" id="date_finish" name="date_finish" value="{{date_finish}}"/></div>
                 </div>
 
-<!--                <div class="row" style="margin-top: 10px;margin-bottom: 10px;">-->
-<!--                    <div class="col text-end"><label class="col-form-label fw-bold text-end"></label></div>-->
-<!--&lt;!&ndash;                    <div class="col text-end"><label class="col-form-label fw-bold text-end">Выберите услугу:</label></div>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div class="col">&ndash;&gt;-->
-<!--&lt;!&ndash;                         <select class="border border-1 border-primary"  name="service" style="border-radius: 5px; padding: 2px; height: 100%;width: 100%;" onchange="Filter_by_service(this)">&ndash;&gt;-->
-<!--&lt;!&ndash;                                <option value="all">Все услуги</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                             {% for s in services %}&ndash;&gt;-->
-<!--&lt;!&ndash;                                <option>{{s.name}}</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                            {% endfor %}&ndash;&gt;-->
-<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
-<!--&lt;!&ndash;                     </div>&ndash;&gt;-->
-<!--                    <div class="col">-->
+                <div class="row" style="margin-top: 10px;margin-bottom: 10px;">
 
-<!--                    </div>-->
-<!--                    <div class="col">-->
-<!--&lt;!&ndash;                        <a class="btn btn-info" style="margin-left: 10px; border-radius: 10px" href="#">Печать</a>&ndash;&gt;-->
-<!--                        <input type="submit"  class="btn btn-info" style="margin-left: 10px; border-radius: 10px" value="Скачать (.xlsx)" />-->
-<!--                    </div>-->
+                    <div class="col text-end">
+                        <label class="col-form-label fw-bold text-end">Выберите услугу:</label></div>
+                    <div class="col">
+                        <select class="border border-1 border-primary"  name="service" style="border-radius: 5px; padding: 2px; height: 100%;width: 100%;">
+                            <option value="all">Все услуги</option>
+                            {% for s in services %}
+                                <option value="{{s.pk}}">{{s.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                    </div>
 
-<!--                </div>-->
+                </div>
+                <div class="row" style="margin-top: 10px;margin-bottom: 10px; text-align: right">
+                    <div class="col" >
+                        <p>{{date_start}} {{date_finish}} {{service}}</p>
+                    </div>
+                    <div class="col" >
+                        <input class="btn btn-primary" type="submit" style="border-radius: 10px" value="Применить фильтр">
+                        <a class="btn btn-primary" style="border-radius: 10px" href="{% url 'listReports' structure.pk %}">Показать все</a>
+<!--                        <a class="btn btn-primary" style="border-radius: 10px" href=" url 'downloadReport' structure.pk ">Скачать (.xlsx)</a>-->
+                    </div>
+                </div>
+                <hr>
 
                 <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
                     <div class="table-responsive" style="margin-top: 10px;margin-bottom: 10px;">
@@ -55,7 +56,7 @@
                                     <th class="text-center">Услуга</th>
                                     <th class="text-center" style="width: 5%;">Количество</th>
                                     <th class="text-center" style="width: 10%;">Сумма</th>
-                                    <th class="text-center" style="width: 10%;">Из них НДС</th>
+                                    <th class="text-center" style="width: 10%;">В том числе НДС</th>
                                     <th class="text-center" style="width: 10%;">Дата создания отчета</th>
                                     <th class="text-center" style="width: 10%;">Дата изменения отчета</th>
                                 </tr>
@@ -79,6 +80,7 @@
                                     <td class="text-end"><strong>Итого</strong></td>
                                     <td class="fw-bold text-center" style="padding-right: 22px;" id="total_count"></td>
                                     <td class="fw-bold text-center" id="total_sum"></td>
+                                    <td class="fw-bold text-center" id="total_nds"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -95,10 +97,12 @@
             const
                 total_count = document.getElementById('total_count'),
                 total_sum = document.getElementById('total_sum');
+                total_nds = document.getElementById('total_nds');
 
             let trs = document.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             tc=0;
             ts=0;
+
             for (let td=0; td < trs.length; td++){
                 if (trs[td].style.display == '') {
                     tc = tc + Number(trs[td].getElementsByTagName('td')[2].innerText);
@@ -107,6 +111,8 @@
                     ts = ts + parseFloat(trs[td].getElementsByTagName('td')[3].innerText.split(' ')[0].replace(',', '.'))
                     total_sum.innerText = ts.toFixed(2).replace('.', ',') + ' руб.';
                 }
+            total_nds.innerText = (parseFloat(total_sum.innerText.split(' ')[0].replace(',', '.'))/6).toFixed(2) + ' руб.';
+
 
             }
         }

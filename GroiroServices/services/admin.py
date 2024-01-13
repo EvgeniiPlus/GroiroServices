@@ -35,7 +35,14 @@ class UsersAdmin(admin.ModelAdmin):
 class ReportsAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'service', 'amount', 'sum', 'nds', 'date_create', 'date_edit')
     list_display_links = ('id', 'date', 'service')
+    list_editable = ('nds',)
     list_filter = ('date', 'service', 'date_create')
+
+class OrdersAdmin(admin.ModelAdmin):
+    list_display = ('id', 'service', 'client_name', 'sum', 'email', 'phone', 'date_of_receiving', 'status', 'date_create', 'date_edit')
+    list_display_links = ('id', 'service')
+    list_editable = ('status',)
+    list_filter = ('date_of_receiving', 'service', 'status', 'date_create')
 
 
 admin.site.register(Services, ServicesAdmin)
@@ -43,3 +50,4 @@ admin.site.register(Structures, StructuresAdmin)
 admin.site.register(Roles, RolesAdmin)
 admin.site.register(Users, UsersAdmin)
 admin.site.register(Reports, ReportsAdmin)
+admin.site.register(Orders, OrdersAdmin)

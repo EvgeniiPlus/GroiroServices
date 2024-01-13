@@ -22,11 +22,15 @@
 
                 <ul class="navbar-nav mx-auto">
                     {% for m in menu %}
+
                         {% if userRole in m.role %}
                             <li class="nav-item"><a class="nav-link active" href="{% url m.url_name %}">{{ m.title }}</a></li>
 
                         {% endif %}
                     {% endfor %}
+                    {% if not userRole %}
+                        <li class="nav-item"><a class="nav-link active" href="{% url 'ibcNewOrder' %}">Заказать печать документа</a></li>
+                    {% endif %}
                 </ul>
             </div>
 
